@@ -1,0 +1,225 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile for researchers and engineers on FireWatch AI",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique user identifier matching Firebase Auth UID"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Researcher full or display name"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "User email address"
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "User avatar image URL"
+        },
+        "role": {
+          "type": "string",
+          "description": "Scientific research position or role"
+        },
+        "department": {
+          "type": "string",
+          "description": "Institution or department affiliation"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Account creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Profile last update timestamp"
+        }
+      },
+      "required": ["id", "email", "createdAt"]
+    },
+    "UserData": {
+      "title": "UserData",
+      "description": "Per-user research workspace data including experiment bookmarks and notes",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Document ID"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Owning user UID"
+        },
+        "bookmarks": {
+          "type": "array",
+          "description": "Bookmarked experiment IDs"
+        },
+        "customNotes": {
+          "type": "object",
+          "description": "Key-value mapping of experimentId to user research note"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last updated timestamp"
+        }
+      },
+      "required": ["id", "userId", "updatedAt"]
+    },
+    "Experiment": {
+      "title": "Experiment",
+      "description": "Spaceflight and microgravity combustion test run record",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique experiment ID"
+        },
+        "ownerId": {
+          "type": "string",
+          "description": "UID of researcher who added the test run"
+        },
+        "codeName": {
+          "type": "string",
+          "description": "Scientific run code"
+        },
+        "title": {
+          "type": "string",
+          "description": "Investigation title"
+        },
+        "mission": {
+          "type": "string",
+          "description": "Mission platform (e.g., ISS CIR, Saffire, Gaganyaan)"
+        },
+        "facility": {
+          "type": "string",
+          "description": "Testing facility or hardware rack"
+        },
+        "year": {
+          "type": "number",
+          "description": "Year of experimental test run"
+        },
+        "gravity": {
+          "type": "string",
+          "description": "Gravitational regime (e.g., 0g, Lunar, Martian, 1g)"
+        },
+        "material": {
+          "type": "string",
+          "description": "Combusted sample material"
+        },
+        "materialCategory": {
+          "type": "string",
+          "description": "Material classification"
+        },
+        "oxygenPercent": {
+          "type": "number",
+          "description": "Ambient oxygen concentration percentage"
+        },
+        "pressureKPa": {
+          "type": "number",
+          "description": "Chamber ambient pressure in kPa"
+        },
+        "airflowCmS": {
+          "type": "number",
+          "description": "Forced ventilation airflow velocity in cm/s"
+        },
+        "flameSpreadMmS": {
+          "type": "number",
+          "description": "Empirical flame spread rate in mm/s"
+        },
+        "peakTemperatureK": {
+          "type": "number",
+          "description": "Peak combustion temperature in Kelvin"
+        },
+        "empiricalResult": {
+          "type": "string",
+          "description": "Observed burn outcome"
+        },
+        "findings": {
+          "type": "string",
+          "description": "Scientific findings summary"
+        },
+        "datasetTag": {
+          "type": "string",
+          "description": "Dataset tag (SIH, NASA, CUSTOM)"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp"
+        }
+      },
+      "required": ["id", "codeName", "title", "gravity", "material", "oxygenPercent"]
+    },
+    "SavedVideo": {
+      "title": "SavedVideo",
+      "description": "Veo synthesized microgravity flame video generation record",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Video generation operation or artifact ID"
+        },
+        "userId": {
+          "type": "string",
+          "description": "UID of user who initiated generation"
+        },
+        "prompt": {
+          "type": "string",
+          "description": "Video synthesis prompt"
+        },
+        "aspectRatio": {
+          "type": "string",
+          "enum": ["16:9", "9:16"],
+          "description": "Video aspect ratio"
+        },
+        "videoUrl": {
+          "type": "string",
+          "description": "URL of synthesized video file"
+        },
+        "thumbnailUrl": {
+          "type": "string",
+          "description": "Source combustion image URL"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Generation timestamp"
+        }
+      },
+      "required": ["id", "userId", "prompt", "aspectRatio", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/User"
+      },
+      "description": "User account profiles"
+    },
+    "/users/{userId}/data/{dataId}": {
+      "schema": {
+        "$ref": "#/entities/UserData"
+      },
+      "description": "User specific research bookmarks, notes, and preferences"
+    },
+    "/users/{userId}/videos/{videoId}": {
+      "schema": {
+        "$ref": "#/entities/SavedVideo"
+      },
+      "description": "User generated Veo microgravity videos"
+    },
+    "/experiments/{experimentId}": {
+      "schema": {
+        "$ref": "#/entities/Experiment"
+      },
+      "description": "Combustion experiment records repository"
+    }
+  }
+}

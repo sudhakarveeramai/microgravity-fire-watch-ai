@@ -1,0 +1,6 @@
+{
+  "name": "FireWatch AI — NASA Microgravity Fire Research Intelligence Platform",
+  "description": "AI-powered scientific intelligence dashboard analyzing decades of NASA and space-agency microgravity combustion, flame spread, and fire safety research for Moon and Mars missions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
